@@ -4,13 +4,351 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IDW Solutions | MERN Stack & AI Specialist</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Outfit -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS STYLES */
+        :root {
+            --bg-dark: #05070a;
+            --accent-primary: #10b981; /* Electric Emerald Green */
+            --accent-secondary: #3b82f6; /* Sapphire Blue */
+            --glass: rgba(255, 255, 255, 0.02);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Animated Background Blobs */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 0% 0%, #064e3b 0%, transparent 40%),
+                        radial-gradient(circle at 100% 100%, #1e3a8a 0%, transparent 40%);
+        }
+
+        .blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: var(--accent-primary);
+            filter: blur(150px);
+            opacity: 0.1;
+            border-radius: 50%;
+            animation: move 25s infinite alternate ease-in-out;
+        }
+
+        .blob.blue {
+            background: var(--accent-secondary);
+            right: -200px;
+            top: -200px;
+            animation-delay: -7s;
+        }
+
+        @keyframes move {
+            from { transform: translate(-50px, -50px) rotate(0deg); }
+            to { transform: translate(150px, 150px) rotate(30deg); }
+        }
+
+        /* Navigation Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: rgba(5, 7, 10, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--text-main);
+        }
+
+        .logo span {
+            color: var(--accent-primary);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        nav a:hover {
+            color: var(--accent-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            max-width: 1000px;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            display: block;
+            background: linear-gradient(to bottom, #fff 30%, var(--accent-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            max-width: 650px;
+            font-size: 1.2rem;
+            margin-bottom: 48px;
+            font-weight: 300;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.4s cubic-bezier(0.2, 1, 0.3, 1);
+            font-size: 1rem;
+            display: inline-block;
+        }
+
+        .btn-main {
+            background: var(--accent-primary);
+            color: #000;
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-main:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(16, 185, 129, 0.3);
+        }
+
+        /* General Section Styling */
+        .section {
+            padding: 100px 8%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            color: var(--accent-primary);
+            letter-spacing: -1px;
+        }
+
+        /* Project Cards Grid */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .glass-card:hover {
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-10px);
+        }
+
+        .video-container {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .card-info {
+            padding: 25px;
+        }
+
+        .card-info .tag {
+            font-size: 0.75rem;
+            color: var(--accent-primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: inline-block;
+            letter-spacing: 1px;
+        }
+
+        .card-info h3 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .card-info p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Services Grid */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .service-card {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .service-card .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .service-card h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--accent-primary);
+        }
+
+        /* Contact Section */
+        .contact-box {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 80px 40px;
+            border-radius: 40px;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+        }
+
+        .contact-box h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 40px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+
+        .contact-link.wa {
+            background: #25d366;
+            color: white;
+        }
+
+        .contact-link.email {
+            background: var(--text-main);
+            color: #000;
+        }
+
+        .contact-link:hover {
+            transform: scale(1.05);
+            filter: brightness(1.1);
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 8%;
+            text-align: center;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            nav { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .section { padding: 60px 5%; }
+            .project-grid { grid-template-columns: 1fr; }
+            .section-header h2 { font-size: 2.2rem; }
+        }
+    </style>
 </head>
 <body>
 
+    <!-- Ambient Background Elements -->
+    <div class="aurora-bg">
+        <div class="blob"></div>
+        <div class="blob blue"></div>
+    </div>
+
+    <!-- Header / Navigation -->
     <header>
-        <div class="logo">IDW <span>Solutions</span></div>
+        <div class="logo">IDW<span> Solutions</span></div>
         <nav>
             <ul>
                 <li><a href="#projects">Projects</a></li>
@@ -20,81 +358,97 @@
         </nav>
     </header>
 
-    <section class="hero">
-        <h1>Intelligent Data Warehouse & Solutions</h1>
-        <p>Expert in MERN Stack Development & AI Integrations for University Projects.</p>
-        <a href="#projects" class="main-btn">View My Work</a>
-    </section>
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>
+                Intelligent Data Warehouse <span>& Solutions</span>
+            </h1>
+            <p>Expert in MERN Stack Development & AI Integrations for University Projects.</p>
+            <div class="cta-group">
+                <a href="#projects" class="btn btn-main">View My Work</a>
+            </div>
+        </section>
 
-    <section id="projects" class="gallery-container">
-        <h2 class="section-title">Latest Project Demos</h2>
-        <div class="video-grid">
+        <!-- Project Demos Section -->
+        <section id="projects" class="section">
+            <div class="section-header">
+                <h2>Latest Project Demos</h2>
+            </div>
             
-            <div class="video-item">
-                <div class="video-frame">
-                    <iframe src="https://www.youtube.com/embed/uPpSMh-mtbA" allowfullscreen></iframe>
+            <div class="project-grid">
+                <!-- Project 1: E-Commerce -->
+                <div class="glass-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/uPpSMh-mtbA" allowfullscreen></iframe>
+                    </div>
+                    <div class="card-info">
+                        <span class="tag">MERN Stack</span>
+                        <h3>E-Commerce Web Application</h3>
+                        <p>A full-featured online store built with MongoDB, Express, React, and Node.js.</p>
+                    </div>
                 </div>
-                <div class="video-info">
-                    <span class="tag">MERN Stack</span>
-                    <h3>E-Commerce Web Application</h3>
-                    <p>A full-featured online store built with MongoDB, Express, React, and Node.js.</p>
+
+                <!-- Project 2: AI Chatbot -->
+                <div class="glass-card">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/SMmxIm6pUeM" allowfullscreen></iframe>
+                    </div>
+                    <div class="card-info">
+                        <span class="tag">AI & NLP</span>
+                        <h3>Intelligent AI Chatbot</h3>
+                        <p>Smart chatbot integration using OpenAI API and Python backend for automated responses.</p>
+                    </div>
                 </div>
             </div>
+        </section>
 
-            <div class="video-item">
-                <div class="video-frame">
-                    <iframe src="https://www.youtube.com/embed/SMmxIm6pUeM" allowfullscreen></iframe>
+        <!-- Services Section -->
+        <section id="services" class="section">
+            <div class="section-header">
+                <h2>How I Can Help You?</h2>
+            </div>
+            <div class="service-grid">
+                <!-- Service 1 -->
+                <div class="glass-card service-card">
+                    <span class="icon">💻</span>
+                    <h4>Full Stack Projects</h4>
+                    <p>MERN Stack ව්‍යාපෘති මුල සිට අවසානය දක්වා විශ්වවිද්‍යාල ප්‍රමිතියට අනුව නිම කර දීම.</p>
                 </div>
-                <div class="video-info">
-                    <span class="tag">AI & NLP</span>
-                    <h3>Intelligent AI Chatbot</h3>
-                    <p>Smart chatbot integration using OpenAI API and Python backend for automated responses.</p>
+                <!-- Service 2 -->
+                <div class="glass-card service-card">
+                    <span class="icon">🤖</span>
+                    <h4>AI & Machine Learning</h4>
+                    <p>AI Chatbots සහ Data Science ආශ්‍රිත ව්‍යාපෘති සඳහා උසස් තාක්ෂණික සහාය.</p>
+                </div>
+                <!-- Service 3 -->
+                <div class="glass-card service-card">
+                    <span class="icon">🛠️</span>
+                    <h4>Code Bug Fixing</h4>
+                    <p>ඔබේ පවතින ව්‍යාපෘතිවල දෝෂ (Errors/Bugs) ඉතා ඉක්මනින් නිවැරදි කර දීම.</p>
                 </div>
             </div>
+        </section>
 
-        </div>
-    </section>
-
-    <section id="services" class="services-section">
-        <h2 class="section-title">How I Can Help You?</h2>
-        <div class="service-grid">
-            <div class="service-card">
-                <div class="service-icon">💻</div>
-                <h4>Full Stack Projects</h4>
-                <p>MERN Stack ව්‍යාපෘති මුල සිට අවසානය දක්වා විශ්වවිද්‍යාල ප්‍රමිතියට අනුව නිම කර දීම.</p>
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="contact-box">
+                <h2>Get In Touch</h2>
+                <p>Click below to start a conversation about your project.</p>
+                <div class="contact-btns">
+                    <a href="https://wa.me/94762898945" target="_blank" class="contact-link wa">
+                        WhatsApp: +94 76 289 8945
+                    </a>
+                    <a href="mailto:wijesinghelageishan@gmail.com" class="contact-link email">
+                        Email Me
+                    </a>
+                </div>
             </div>
-            <div class="service-card">
-                <div class="service-icon">🤖</div>
-                <h4>AI & Machine Learning</h4>
-                <p>AI Chatbots සහ Data Science ආශ්‍රිත ව්‍යාපෘති සඳහා උසස් තාක්ෂණික සහාය.</p>
-            </div>
-            <div class="service-card">
-                <div class="service-icon">🛠️</div>
-                <h4>Code Bug Fixing</h4>
-                <p>ඔබේ පවතින ව්‍යාපෘතිවල දෝෂ (Errors/Bugs) ඉතා ඉක්මනින් නිවැරදි කර දීම.</p>
-            </div>
-        </div>
-    </section>
+        </section>
+    </main>
 
-    <section id="contact" class="contact-cta">
-        <h2 class="section-title">Get In Touch</h2>
-        <p>Click below to start a conversation about your project.</p>
-        
-        <div class="contact-methods">
-            <a href="https://wa.me/94762898945" target="_blank" class="contact-card">
-                <div class="contact-icon">📱</div>
-                <h3>WhatsApp</h3>
-                <p>+94 76 289 8945</p>
-            </a>
-
-            <a href="mailto:wijesinghelageishan@gmail.com" class="contact-card">
-                <div class="contact-icon">📧</div>
-                <h3>Email</h3>
-                <p>wijesinghelageishan@gmail.com</p>
-            </a>
-        </div>
-    </section>
-
+    <!-- Footer -->
     <footer>
         <p>© 2025 IDW Solutions - All Rights Reserved | Built for Success</p>
     </footer>
